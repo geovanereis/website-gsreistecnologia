@@ -28,27 +28,59 @@ export default function ContactSection() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    console.log('Form submitted:', formData);
-    
-    // //todo: remove mock submission - integrate with backend
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Solicitação enviada!",
-        description: "Entraremos em contato em até 24 horas.",
+    try {
+      const response = await fetch('/api/quote-requests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
       
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        phone: '',
-        service: '',
-        message: ''
+      const result = await response.json();
+      
+      if (result.success) {
+        toast({
+          title: "Solicitação enviada!",
+          description: "Entraremos em contato em até 24 horas.",
+        });
+        
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          phone: '',
+          service: '',
+          message: ''
+        });
+      } else {
+        // Handle validation errors
+        if (result.errors) {
+          const errorMessages = result.errors.map((err: any) => err.message).join(', ');
+          toast({
+            title: "Dados inválidos",
+            description: errorMessages,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Erro ao enviar solicitação",
+            description: result.message || "Tente novamente em alguns instantes.",
+            variant: "destructive",
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Erro de conexão",
+        description: "Verifique sua conexão e tente novamente.",
+        variant: "destructive",
       });
-    }, 1500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
