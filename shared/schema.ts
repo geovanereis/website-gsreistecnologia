@@ -33,8 +33,8 @@ export const insertQuoteRequestSchema = createInsertSchema(quoteRequests).omit({
   email: z.string().email("Email inválido"),
   company: z.string().min(1, "Nome da empresa é obrigatório"),
   service: z.string().min(1, "Serviço é obrigatório"),
-  phone: z.string().optional(),
-  message: z.string().optional(),
+  phone: z.string().nullable(),
+  message: z.string().nullable(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
