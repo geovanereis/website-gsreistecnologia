@@ -24,13 +24,15 @@ Preferred communication style: Simple, everyday language.
 - **Language**: TypeScript with ES modules
 - **API Design**: RESTful API with proper error handling and request logging middleware
 - **Validation**: Zod schemas for request validation with Portuguese error messages
-- **Storage Interface**: Abstract storage pattern allowing for memory-based development and database implementations
+- **Storage Interface**: DatabaseStorage implementation using PostgreSQL for production-ready data persistence
 
 ### Database Design
 - **ORM**: Drizzle ORM for type-safe database operations
-- **Database**: PostgreSQL with Neon serverless hosting
+- **Database**: PostgreSQL with Neon serverless hosting (fully configured and operational)
 - **Schema**: Two main tables - users (authentication) and quote_requests (business inquiries)
-- **Migrations**: Drizzle Kit for schema management and migrations
+  - quote_requests table: id (UUID), name, email, company, service, phone (nullable), message (nullable), createdAt
+  - users table: id (UUID), username, password
+- **Migrations**: Drizzle Kit for schema management and migrations (applied successfully)
 
 ### Component Architecture
 - **Design System**: Professional B2B aesthetic inspired by Cloudflare, AWS, and Microsoft Azure
