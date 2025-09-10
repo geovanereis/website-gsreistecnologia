@@ -1,0 +1,1 @@
+import Footer from '../Footer';\n\nexport default function FooterExample() {\n  return <Footer />;\n}\n"

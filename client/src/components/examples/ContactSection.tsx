@@ -1,0 +1,1 @@
+import ContactSection from '../ContactSection';\nimport { Toaster } from '@/components/ui/toaster';\n\nexport default function ContactSectionExample() {\n  return (\n    <>\n      <ContactSection />\n      <Toaster />\n    </>\n  );\n}\n"

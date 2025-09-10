@@ -1,0 +1,1 @@
+import Home from '../../pages/Home';\nimport { Toaster } from '@/components/ui/toaster';\n\nexport default function HomeExample() {\n  return (\n    <>\n      <Home />\n      <Toaster />\n    </>\n  );\n}\n"

@@ -1,0 +1,1 @@
+import ServicesSection from '../ServicesSection';\n\nexport default function ServicesSectionExample() {\n  return <ServicesSection onContactClick={() => console.log('Contact clicked from services')} />;\n}\n"

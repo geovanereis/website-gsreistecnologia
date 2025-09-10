@@ -1,0 +1,1 @@
+import AboutSection from '../AboutSection';\n\nexport default function AboutSectionExample() {\n  return <AboutSection />;\n}\n"

@@ -1,0 +1,1 @@
+import ThemeToggle from '../ThemeToggle';\n\nexport default function ThemeToggleExample() {\n  return (\n    <div className=\"p-4\">\n      <ThemeToggle />\n    </div>\n  );\n}\n"
