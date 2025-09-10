@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type QuoteRequest, type InsertQuoteRequest } from "@shared/schema";
+import { type User, type InsertUser, type QuoteRequest, type InsertQuoteRequest, type SmsMessage, type InsertSmsMessage } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 // modify the interface with any CRUD methods
@@ -11,15 +11,21 @@ export interface IStorage {
   createQuoteRequest(request: InsertQuoteRequest): Promise<QuoteRequest>;
   getQuoteRequests(): Promise<QuoteRequest[]>;
   getQuoteRequest(id: string): Promise<QuoteRequest | undefined>;
+  createSmsMessage(sms: InsertSmsMessage): Promise<SmsMessage>;
+  getSmsMessages(): Promise<SmsMessage[]>;
+  getSmsMessage(id: string): Promise<SmsMessage | undefined>;
+  updateSmsMessage(id: string, updates: Partial<Pick<SmsMessage, 'status' | 'messageSid'>>): Promise<SmsMessage | undefined>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private quoteRequests: Map<string, QuoteRequest>;
+  private smsMessages: Map<string, SmsMessage>;
 
   constructor() {
     this.users = new Map();
     this.quoteRequests = new Map();
+    this.smsMessages = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -58,6 +64,38 @@ export class MemStorage implements IStorage {
 
   async getQuoteRequest(id: string): Promise<QuoteRequest | undefined> {
     return this.quoteRequests.get(id);
+  }
+
+  async createSmsMessage(insertSms: InsertSmsMessage): Promise<SmsMessage> {
+    const id = randomUUID();
+    const sentAt = new Date();
+    const sms: SmsMessage = { 
+      ...insertSms, 
+      id, 
+      status: "pending",
+      messageSid: null,
+      sentAt 
+    };
+    this.smsMessages.set(id, sms);
+    return sms;
+  }
+
+  async getSmsMessages(): Promise<SmsMessage[]> {
+    return Array.from(this.smsMessages.values())
+      .sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+  }
+
+  async getSmsMessage(id: string): Promise<SmsMessage | undefined> {
+    return this.smsMessages.get(id);
+  }
+
+  async updateSmsMessage(id: string, updates: Partial<Pick<SmsMessage, 'status' | 'messageSid'>>): Promise<SmsMessage | undefined> {
+    const sms = this.smsMessages.get(id);
+    if (!sms) return undefined;
+    
+    const updatedSms = { ...sms, ...updates };
+    this.smsMessages.set(id, updatedSms);
+    return updatedSms;
   }
 }
 
