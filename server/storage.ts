@@ -1,5 +1,6 @@
-import { type User, type InsertUser, type QuoteRequest, type InsertQuoteRequest } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { users, quoteRequests, type User, type InsertUser, type QuoteRequest, type InsertQuoteRequest } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -13,52 +14,45 @@ export interface IStorage {
   getQuoteRequest(id: string): Promise<QuoteRequest | undefined>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private quoteRequests: Map<string, QuoteRequest>;
-
-  constructor() {
-    this.users = new Map();
-    this.quoteRequests = new Map();
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async createQuoteRequest(insertRequest: InsertQuoteRequest): Promise<QuoteRequest> {
-    const id = randomUUID();
-    const createdAt = new Date();
-    const request: QuoteRequest = { 
-      ...insertRequest, 
-      id, 
-      createdAt 
-    };
-    this.quoteRequests.set(id, request);
+    const [request] = await db
+      .insert(quoteRequests)
+      .values(insertRequest)
+      .returning();
     return request;
   }
 
   async getQuoteRequests(): Promise<QuoteRequest[]> {
-    return Array.from(this.quoteRequests.values())
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    const results = await db
+      .select()
+      .from(quoteRequests)
+      .orderBy(desc(quoteRequests.createdAt));
+    return results;
   }
 
   async getQuoteRequest(id: string): Promise<QuoteRequest | undefined> {
-    return this.quoteRequests.get(id);
+    const [request] = await db.select().from(quoteRequests).where(eq(quoteRequests.id, id));
+    return request || undefined;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
