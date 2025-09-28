@@ -160,7 +160,7 @@ export default function ServicesSection({ onContactClick }: ServicesSectionProps
       </section>
 
       {/* Clients / Partners Section */}
-      <section id="clientes" className="py-24 bg-muted/10">
+      {/* <section id="clientes" className="py-24 bg-muted/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             Nossos Clientes & Parceiros
@@ -197,7 +197,7 @@ export default function ServicesSection({ onContactClick }: ServicesSectionProps
             })}
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }
