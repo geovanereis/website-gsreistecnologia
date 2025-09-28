@@ -1,8 +1,8 @@
-# TechSolutions - Brazilian IT Services Landing Page
+# G S Reis Tecnologia - Brazilian IT Services Landing Page
 
 ## Overview
 
-This is a professional landing page for a Brazilian IT services company called "TechSolutions" that provides computer infrastructure, electrical installations, computer maintenance, and system development services to small and medium businesses. The application is built as a full-stack web solution with a React frontend, Express backend, and PostgreSQL database for handling quote requests.
+This is a professional landing page for a Brazilian IT services company called "G S Reis Tecnologia" that provides computer infrastructure, electrical installations, computer maintenance, and system development services to small and medium businesses. The application is built as a full-stack web solution with a React frontend, Express backend, and PostgreSQL database for handling quote requests.
 
 ## User Preferences
 

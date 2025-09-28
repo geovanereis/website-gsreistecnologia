@@ -49,7 +49,7 @@ export default function AboutSection() {
               </h3>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p data-testid="text-about-story-1">
-                  Fundada em 2014, a TechSolutions nasceu da necessidade de oferecer serviços 
+                  Fundada em 2014, a G S Reis Tecnologia nasceu da necessidade de oferecer serviços 
                   de tecnologia especializados para empresas que buscam soluções confiáveis 
                   e personalizadas.
                 </p>
@@ -89,7 +89,7 @@ export default function AboutSection() {
             <div className="relative rounded-2xl overflow-hidden">
               <img 
                 src={teamImage} 
-                alt="Equipe TechSolutions trabalhando" 
+                alt="Equipe G S Reis Tecnologia trabalhando" 
                 className="w-full h-auto object-cover"
                 data-testid="img-about-team"
               />

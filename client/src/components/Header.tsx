@@ -31,7 +31,7 @@ export default function Header({ onContactClick }: HeaderProps) {
           {/* Logo */}
           <div className="flex-shrink-0">
             <h1 className="text-xl font-bold text-primary" data-testid="text-logo">
-              TechSolutions
+              G S Reis Tecnologia
             </h1>
           </div>
 

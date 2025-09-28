@@ -24,28 +24,47 @@ export default function ContactSection() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const validateForm = () => {
+    if (!formData.name.trim()) return "O campo Nome é obrigatório.";
+    if (!formData.email.trim()) return "O campo E-mail é obrigatório.";
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return "E-mail inválido.";
+    if (!formData.company.trim()) return "O campo Empresa é obrigatório.";
+    if (!formData.service.trim()) return "Selecione um serviço de interesse.";
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validationError = validateForm();
+    if (validationError) {
+      toast({
+        title: "Erro de validação",
+        description: validationError,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
-    
+
     try {
-      const response = await fetch('/api/quote-requests', {
+      const response = await fetch('https://gsreistecnologia.com.br/api/quote-requests/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
         toast({
           title: "Solicitação enviada!",
           description: "Entraremos em contato em até 24 horas.",
         });
-        
-        // Reset form
+
         setFormData({
           name: '',
           email: '',
@@ -55,21 +74,11 @@ export default function ContactSection() {
           message: ''
         });
       } else {
-        // Handle validation errors
-        if (result.errors) {
-          const errorMessages = result.errors.map((err: any) => err.message).join(', ');
-          toast({
-            title: "Dados inválidos",
-            description: errorMessages,
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Erro ao enviar solicitação",
-            description: result.message || "Tente novamente em alguns instantes.",
-            variant: "destructive",
-          });
-        }
+        toast({
+          title: "Erro ao enviar solicitação",
+          description: result.error || "Tente novamente em alguns instantes.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -87,17 +96,18 @@ export default function ContactSection() {
     {
       icon: MapPin,
       title: 'Endereço',
-      content: 'Rua das Tecnologias, 123\nCentro - São Paulo, SP\nCEP: 01234-567'
+      content: 'Rua D10, 265\nAquiraz - CE\nCEP: 61700-000'
     },
     {
       icon: Phone,
       title: 'Telefone',
-      content: '(11) 99999-9999\n(11) 3333-4444'
+      content: '(85) 99867-8538'
+      //\n(11) 3333-4444'
     },
     {
       icon: Mail,
       title: 'E-mail',
-      content: 'contato@techsolutions.com.br\norcamento@techsolutions.com.br'
+      content: 'contato@gsreistecnologia.com.br\norcamento@gsreistecnologia.com.br'
     },
     {
       icon: Clock,
@@ -120,10 +130,10 @@ export default function ContactSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center space-y-4 mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground" data-testid="text-contact-title">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
             Entre em Contato
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-contact-description">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Solicite seu orçamento personalizado. Nossa equipe está pronta para atender 
             suas necessidades e oferecer a melhor solução em tecnologia.
           </p>
@@ -134,8 +144,8 @@ export default function ContactSection() {
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle data-testid="text-form-title">Solicitar Orçamento</CardTitle>
-                <CardDescription data-testid="text-form-description">
+                <CardTitle>Solicitar Orçamento</CardTitle>
+                <CardDescription>
                   Preencha o formulário abaixo e entraremos em contato em até 24 horas.
                 </CardDescription>
               </CardHeader>
@@ -150,7 +160,6 @@ export default function ContactSection() {
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Seu nome completo"
                         required
-                        data-testid="input-name"
                       />
                     </div>
                     <div className="space-y-2">
@@ -162,7 +171,6 @@ export default function ContactSection() {
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="seu@email.com"
                         required
-                        data-testid="input-email"
                       />
                     </div>
                   </div>
@@ -176,7 +184,6 @@ export default function ContactSection() {
                         onChange={(e) => handleInputChange('company', e.target.value)}
                         placeholder="Nome da sua empresa"
                         required
-                        data-testid="input-company"
                       />
                     </div>
                     <div className="space-y-2">
@@ -186,7 +193,6 @@ export default function ContactSection() {
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="(11) 99999-9999"
-                        data-testid="input-phone"
                       />
                     </div>
                   </div>
@@ -194,12 +200,12 @@ export default function ContactSection() {
                   <div className="space-y-2">
                     <Label htmlFor="service">Serviço de Interesse *</Label>
                     <Select value={formData.service} onValueChange={(value) => handleInputChange('service', value)} required>
-                      <SelectTrigger data-testid="select-service">
+                      <SelectTrigger>
                         <SelectValue placeholder="Selecione o serviço" />
                       </SelectTrigger>
                       <SelectContent>
                         {services.map((service, index) => (
-                          <SelectItem key={index} value={service} data-testid={`option-service-${index}`}>
+                          <SelectItem key={index} value={service}>
                             {service}
                           </SelectItem>
                         ))}
@@ -215,7 +221,6 @@ export default function ContactSection() {
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       placeholder="Descreva suas necessidades ou dúvidas..."
                       rows={4}
-                      data-testid="input-message"
                     />
                   </div>
 
@@ -223,7 +228,6 @@ export default function ContactSection() {
                     type="submit" 
                     className="w-full bg-success hover:bg-success/90 text-success-foreground" 
                     disabled={isSubmitting}
-                    data-testid="button-submit-form"
                   >
                     {isSubmitting ? 'Enviando...' : 'Solicitar Orçamento'}
                   </Button>
@@ -237,17 +241,17 @@ export default function ContactSection() {
             {contactInfo.map((info, index) => {
               const IconComponent = info.icon;
               return (
-                <Card key={index} className="hover-elevate" data-testid={`card-contact-info-${index}`}>
+                <Card key={index} className="hover-elevate">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <IconComponent className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-foreground mb-2" data-testid={`text-contact-info-title-${index}`}>
+                        <h3 className="font-medium text-foreground mb-2">
                           {info.title}
                         </h3>
-                        <div className="text-sm text-muted-foreground whitespace-pre-line" data-testid={`text-contact-info-content-${index}`}>
+                        <div className="text-sm text-muted-foreground whitespace-pre-line">
                           {info.content}
                         </div>
                       </div>
@@ -259,12 +263,11 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* Additional Information */}
         <div className="mt-16 text-center bg-card border border-card-border rounded-2xl p-8">
-          <h3 className="text-xl font-semibold text-card-foreground mb-4" data-testid="text-contact-guarantee-title">
+          <h3 className="text-xl font-semibold text-card-foreground mb-4">
             Garantia de Resposta
           </h3>
-          <p className="text-muted-foreground max-w-2xl mx-auto" data-testid="text-contact-guarantee-description">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Nos comprometemos a responder todas as solicitações de orçamento em até 24 horas úteis. 
             Para emergências, temos suporte disponível 24/7 para nossos clientes corporativos.
           </p>

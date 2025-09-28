@@ -87,7 +87,7 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-success/20 rounded-2xl transform rotate-6"></div>
               <div className="relative bg-card border border-card-border rounded-2xl p-8 space-y-6">
-                <h3 className="text-xl font-semibold text-card-foreground">Por que escolher a TechSolutions?</h3>
+                <h3 className="text-xl font-semibold text-card-foreground">Por que escolher a G S Reis Tecnologia?</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="h-2 w-2 bg-success rounded-full mt-2 flex-shrink-0"></div>

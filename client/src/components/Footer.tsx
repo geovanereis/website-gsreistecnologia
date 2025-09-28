@@ -34,7 +34,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-primary" data-testid="text-footer-logo">
-              TechSolutions
+              G S Reis Tecnologia
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed" data-testid="text-footer-description">
               Soluções completas em tecnologia da informação para empresas de pequeno 
@@ -107,23 +107,23 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                 <div className="text-sm text-muted-foreground" data-testid="text-footer-address">
-                  Rua das Tecnologias, 123<br />
-                  Centro - São Paulo, SP<br />
-                  CEP: 01234-567
+                  Via Local D10, 265<br />
+                  Aquiraz - CE<br />
+                  CEP: 61700-000
                 </div>
               </div>
               
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-primary flex-shrink-0" />
                 <div className="text-sm text-muted-foreground" data-testid="text-footer-phone">
-                  (11) 99999-9999
+                  (85) 99867-8538
                 </div>
               </div>
               
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />
                 <div className="text-sm text-muted-foreground" data-testid="text-footer-email">
-                  contato@techsolutions.com.br
+                  contato@gsreistecnologia.com.br
                 </div>
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function Footer() {
         {/* Bottom Footer */}
         <div className="py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-muted-foreground" data-testid="text-footer-copyright">
-            © {currentYear} TechSolutions. Todos os direitos reservados.
+            © {currentYear} G S Reis Tecnologia. Todos os direitos reservados.
           </div>
           
           <div className="flex flex-wrap gap-6">
